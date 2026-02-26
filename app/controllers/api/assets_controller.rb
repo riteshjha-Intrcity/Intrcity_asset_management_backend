@@ -40,10 +40,9 @@ class Api::AssetsController < ApplicationController
     asset = Asset.new(asset_params)
 
     if asset.save
-      # create assignment history if assigned_to present
       if asset.assigned_to.present?
         AssetAssignment.create!(
-          asset_id: asset.id,
+          asset: asset,
           assigned_to: asset.assigned_to,
           assigned_from_date: asset.assigned_date || Date.today,
           location: asset.location
@@ -60,10 +59,11 @@ class Api::AssetsController < ApplicationController
   def update
     asset = Asset.find(params[:id])
 
-    # Track assignment change
     if asset_params[:assigned_to].present? && asset.assigned_to != asset_params[:assigned_to]
+      asset.asset_assignments.where(assigned_to_date: nil).update_all(assigned_to_date: Date.today)
+
       AssetAssignment.create!(
-        asset_id: asset.id,
+        asset: asset,
         assigned_to: asset_params[:assigned_to],
         assigned_from_date: asset_params[:assigned_date] || Date.today,
         location: asset_params[:location] || asset.location
@@ -89,16 +89,15 @@ class Api::AssetsController < ApplicationController
 
   private
 
-  # app/controllers/api/assets_controller.rb
-def asset_params
-  params.require(:asset).permit(
-    :asset_tag, :asset_category, :device_type, :brand, :model_id,
-    :serial_number, :configuration, :operating_system,
-    :purchase_date, :purchase_cost,
-    :warranty_years, :warranty_expiry_date,
-    :location, :assigned_to, :assigned_date,
-    :repairing_date, :repairing_cost,
-    :asset_status, :cpu_core
-  )
-end
+  def asset_params
+    params.require(:asset).permit(
+      :asset_category, :device_type, :brand, :model_id,
+      :serial_number, :configuration, :operating_system,
+      :purchase_date, :purchase_cost,
+      :warranty_years, :warranty_expiry_date,
+      :location, :assigned_to, :assigned_date,
+      :repairing_date, :repairing_cost,
+      :asset_status, :cpu_core
+    )
+  end
 end
