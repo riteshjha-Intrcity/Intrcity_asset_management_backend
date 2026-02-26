@@ -1,5 +1,6 @@
 # app/controllers/api/assets_controller.rb
 class Api::AssetsController < ApplicationController
+  before_action :require_admin!, except: [:index, :show]
 
   # GET /api/assets?status=Working&location=Noida&category=Laptop&page=1&per_page=20
   def index

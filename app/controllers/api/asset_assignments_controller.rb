@@ -1,5 +1,6 @@
 # app/controllers/api/asset_assignments_controller.rb
 class Api::AssetAssignmentsController < ApplicationController
+  before_action :require_admin!
   def index
     asset = Asset.find(params[:asset_id])
     render json: asset.asset_assignments.order(created_at: :asc)

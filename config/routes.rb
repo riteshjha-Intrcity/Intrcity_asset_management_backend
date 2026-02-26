@@ -1,16 +1,15 @@
+# config/routes.rb
 Rails.application.routes.draw do
   namespace :api do
-    # Assets + Assignments
+    post "login", to: "auth#login"
+
     resources :assets do
       resources :asset_assignments, only: [:index, :create] do
-        member { patch :close }   # unassign
+        member { patch :close }
       end
     end
 
-    # Users (admin only)
     resources :users, only: [:create, :index]
-
-    # Current logged-in user
     get "me", to: "users#me"
   end
 end
