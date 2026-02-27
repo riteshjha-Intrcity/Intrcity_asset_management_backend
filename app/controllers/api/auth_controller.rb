@@ -16,6 +16,11 @@ class Api::AuthController < ApplicationController
     end
   end
 
+  def logout
+    # JWT is stateless, so just respond OK
+    render json: { message: "Logged out successfully" }, status: :ok
+  end
+
   private
 
   def encode_token(payload)
