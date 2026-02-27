@@ -1,5 +1,9 @@
-# config/routes.rb
 Rails.application.routes.draw do
+  # Allow CORS preflight requests
+  match "*path", to: "application#preflight", via: [:options]
+  namespace :api do
+  get "meta/asset_options", to: "assets#options"
+  end
   namespace :api do
     post "login", to: "auth#login"
 
@@ -9,7 +13,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :users, only: [:create, :index]
+    resources :users, only: [:create, :index, :destroy]
     get "me", to: "users#me"
   end
 end

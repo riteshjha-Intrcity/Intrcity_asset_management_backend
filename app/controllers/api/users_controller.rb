@@ -7,6 +7,18 @@ class Api::UsersController < ApplicationController
     render json: User.select(:id, :name, :emp_id, :email, :gmail, :phone, :joining_date, :role)
   end
 
+  def destroy
+  user = User.find(params[:id])
+
+  # safety: prevent delete if user has active assigned asset
+  if Asset.exists?(assigned_to: user.emp_id)
+    return render json: { error: "Cannot delete user with assigned asset" }, status: :unprocessable_entity
+  end
+
+  user.destroy
+  head :no_content
+end
+
   def create
     # 🚨 Bootstrap logic
     if User.exists?

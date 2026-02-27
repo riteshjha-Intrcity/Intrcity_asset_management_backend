@@ -1,11 +1,19 @@
 # app/controllers/api/assets_controller.rb
 class Api::AssetsController < ApplicationController
   before_action :require_admin!, except: [:index, :show]
+  def options
+  render json: {
+    categories: Asset::ASSET_CATEGORIES,
+    statuses: Asset::ASSET_STATUSES,
+    locations: Asset::LOCATIONS
+  }
+end
 
   # GET /api/assets?status=Working&location=Noida&category=Laptop&page=1&per_page=20
   def index
     assets = Asset.all
-
+  # add this line inside index
+assets = assets.where(assigned_to: params[:assigned_to]) if params[:assigned_to].present?
     assets = assets.where(asset_status: params[:status]) if params[:status].present?
     assets = assets.where(location: params[:location]) if params[:location].present?
     assets = assets.where(asset_category: params[:category]) if params[:category].present?

@@ -1,8 +1,15 @@
-# app/controllers/application_controller.rb
 class ApplicationController < ActionController::API
-  before_action :authorize_request
+  before_action :authorize_request, unless: :preflight_request?
+
+  def preflight
+    head :ok
+  end
 
   private
+
+  def preflight_request?
+    request.method == "OPTIONS"
+  end
 
   def authorize_request
     header = request.headers["Authorization"]
