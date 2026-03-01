@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_26_070000) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_112617) do
   create_table "asset_assignments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "asset_id", null: false
     t.date "assigned_from_date"
@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_070000) do
     t.string "location"
     t.datetime "updated_at", null: false
     t.index ["asset_id"], name: "index_asset_assignments_on_asset_id"
+    t.index ["assigned_to_date"], name: "index_asset_assignments_on_assigned_to_date"
   end
 
   create_table "assets", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -54,7 +55,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_070000) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
-    t.string "emp_id", null: false
+    t.string "emp_id"
     t.string "gmail"
     t.date "joining_date"
     t.string "name"
@@ -63,7 +64,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_070000) do
     t.string "role"
     t.datetime "updated_at", null: false
     t.index ["emp_id"], name: "index_users_on_emp_id", unique: true
-    t.index ["gmail"], name: "index_users_on_gmail", unique: true
   end
 
   add_foreign_key "asset_assignments", "assets"
