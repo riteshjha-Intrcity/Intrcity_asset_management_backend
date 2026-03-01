@@ -20,4 +20,7 @@ end
     resources :users, only: [:create, :index, :destroy]
     get "me", to: "users#me"
   end
+  namespace :api do
+  get "dashboard", to: "dashboard#index"
+end
 end
