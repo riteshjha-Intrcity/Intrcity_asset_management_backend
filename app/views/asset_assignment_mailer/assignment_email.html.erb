@@ -1,0 +1,12 @@
+<h2>Asset Assignment Pending</h2>
+
+<p>
+  Asset: <strong><%= @asset.asset_tag %></strong><br>
+  Category: <%= @asset.asset_category %>
+</p>
+
+<p>Please confirm assignment:</p>
+
+<a href="http://localhost:3001/confirm-assignment?token=<%= @assignment.confirmation_token %>">
+  Confirm Assignment
+</a>

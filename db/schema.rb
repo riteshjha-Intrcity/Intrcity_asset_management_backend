@@ -10,14 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_112617) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_01_173915) do
   create_table "asset_assignments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "asset_id", null: false
     t.date "assigned_from_date"
     t.string "assigned_to"
     t.date "assigned_to_date"
+    t.string "confirmation_token"
     t.datetime "created_at", null: false
     t.string "location"
+    t.string "status"
     t.datetime "updated_at", null: false
     t.index ["asset_id"], name: "index_asset_assignments_on_asset_id"
     t.index ["assigned_to_date"], name: "index_asset_assignments_on_assigned_to_date"
@@ -43,6 +45,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_112617) do
     t.date "repairing_date"
     t.string "serial_number"
     t.datetime "updated_at", null: false
+    t.text "vendor_address"
+    t.string "vendor_contact"
+    t.string "vendor_email"
+    t.string "vendor_name"
     t.date "warranty_expiry_date"
     t.integer "warranty_years"
     t.index ["asset_category"], name: "index_assets_on_asset_category"

@@ -18,6 +18,9 @@ class Asset < ApplicationRecord
   validates :asset_status, inclusion: { in: ASSET_STATUSES }, allow_blank: true
   validates :location, inclusion: { in: LOCATIONS }, allow_blank: true
   validates :serial_number, uniqueness: true, allow_blank: true
+  validates :vendor_email,
+          format: { with: URI::MailTo::EMAIL_REGEXP },
+          allow_blank: true
 
   # EUC assets only (Laptop/Mobile)
   def euc_asset?
