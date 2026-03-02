@@ -33,11 +33,14 @@ class Api::AssetAssignmentsController < ApplicationController
   end
 
   assignment = AssetAssignment.create!(
-    asset_id: asset.id,
-    assigned_to: assignment_params[:assigned_to],
-    assigned_from_date: Date.today,
-    location: assignment_params[:location]
-  )
+  asset_id: asset.id,
+  assigned_to: assignment_params[:assigned_to],
+  assigned_from_date: Date.today,
+  location: assignment_params[:location],
+  status: "pending"
+)
+
+AssetAssignmentMailer.assignment_email(assignment).deliver_later
 
   # Sync snapshot
   asset.update!(
@@ -53,6 +56,25 @@ rescue ActiveRecord::RecordNotFound
 rescue ActiveRecord::RecordInvalid => e
   render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
 end
+
+# ==========================================
+# PATCH /api/asset_assignments/confirm
+# ==========================================
+def confirm
+  assignment = AssetAssignment.find_by(
+    confirmation_token: params[:token]
+  )
+
+  return render json: { error: "Invalid token" }, status: :not_found unless assignment
+
+  if assignment.status == "assigned"
+    return render json: { message: "Already confirmed" }
+  end
+
+  assignment.update!(status: "assigned")
+
+  render json: { message: "Assignment confirmed successfully" }
+end
   
 
 
@@ -61,26 +83,28 @@ end
   # Close / Unassign
   # ==========================================
   def close
-    assignment = @asset.asset_assignments.find(params[:id])
+  assignment = @asset.asset_assignments.find(params[:id])
 
-    if assignment.assigned_to_date.present?
-      return render json: {
-        error: "This assignment is already closed."
-      }, status: :unprocessable_entity
-    end
+  if assignment.assigned_to_date.present?
+    return render json: {
+      error: "This assignment is already closed."
+    }, status: :unprocessable_entity
+  end
 
-    assignment.update!(assigned_to_date: Date.today)
+  assignment.update!(
+    assigned_to_date: Date.today,
+    status: "closed"
+  )
 
-    # 🔥 Clear snapshot on asset
-    @asset.update!(
-      assigned_to: nil,
-      assigned_date: nil
-    )
+  @asset.update!(
+    assigned_to: nil,
+    assigned_date: nil
+  )
 
-    render json: {
-      message: "Asset unassigned successfully",
-      assignment: assignment
-    }
+  render json: {
+    message: "Asset unassigned successfully",
+    assignment: assignment
+  }
 
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Asset or Assignment not found" },
