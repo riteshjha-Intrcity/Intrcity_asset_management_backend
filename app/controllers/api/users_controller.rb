@@ -1,7 +1,7 @@
 # app/controllers/api/users_controller.rb
 class Api::UsersController < ApplicationController
-  skip_before_action :authorize_request, only: [:create]
-  before_action :require_admin!, only: [:index]
+  skip_before_action :authorize_request, only: [ :create ]
+  before_action :require_admin!, only: [ :index ]
 
   def index
     render json: User.select(:id, :name, :emp_id, :email, :gmail, :phone, :joining_date, :role)

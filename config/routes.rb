@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # Allow CORS preflight requests
-  match "*path", to: "application#preflight", via: [:options]
+  match "*path", to: "application#preflight", via: [ :options ]
 
   namespace :api do
     # ==============================
@@ -23,19 +23,19 @@ get "asset_assignments/confirm", to: "asset_assignments#confirm"
     # ASSETS + ASSIGNMENTS
     # ==============================
     resources :assets do
-      resources :asset_assignments, only: [:index, :create] do
+      resources :asset_assignments, only: [ :index, :create ] do
         member do
           patch :close
         end
       end
     end
 
-   
+
 
     # ==============================
     # USERS
     # ==============================
-    resources :users, only: [:create, :index, :destroy]
+    resources :users, only: [ :create, :index, :destroy ]
     get "me", to: "users#me"
   end
 end

@@ -20,7 +20,6 @@
 /tmp/pids/*
 !/tmp/pids/
 !/tmp/pids/.keep
-/config/database.yml
 
 # Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*

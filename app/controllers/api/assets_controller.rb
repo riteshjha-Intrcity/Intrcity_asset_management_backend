@@ -1,5 +1,5 @@
 class Api::AssetsController < ApplicationController
-  before_action :require_admin!, except: [:index, :show]
+  before_action :require_admin!, except: [ :index, :show ]
 
   # ==========================================
   # OPTIONS

@@ -11,7 +11,7 @@ class AssetAssignmentMailer < ApplicationMailer
       "#{ENV['FRONTEND_URL']}/confirm-assignment?token=#{assignment.confirmation_token}"
 
     mail(
-      to: [user&.email, "admin@company.com"],
+      to: [ user&.email, "admin@company.com" ],
       subject: "Asset Assignment Confirmation Required"
     )
   end

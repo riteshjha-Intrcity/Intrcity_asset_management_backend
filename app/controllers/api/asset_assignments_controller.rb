@@ -1,6 +1,6 @@
 class Api::AssetAssignmentsController < ApplicationController
-  before_action :require_admin!, except: [:confirm]
-  before_action :set_asset, except: [:confirm]
+  before_action :require_admin!, except: [ :confirm ]
+  before_action :set_asset, except: [ :confirm ]
 
   # ==========================================
   # GET /api/assets/:asset_id/asset_assignments

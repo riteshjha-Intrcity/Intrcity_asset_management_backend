@@ -9,9 +9,9 @@ class Asset < ApplicationRecord
     Server Laptop Macbook Android iOS Router Switch CCTV AccessPoint Printer TV AudioSystems Desktop
   ]
 
-  ASSET_STATUSES = ["Working", "Under Repair", "Dead"]
+  ASSET_STATUSES = [ "Working", "Under Repair", "Dead" ]
 
-  LOCATIONS = ["Noida", "Delhi", "Kochi", "LKO", "Lounge"]
+  LOCATIONS = [ "Noida", "Delhi", "Kochi", "LKO", "Lounge" ]
 
   validates :asset_tag, uniqueness: true
   validates :asset_category, inclusion: { in: ASSET_CATEGORIES }, allow_blank: true

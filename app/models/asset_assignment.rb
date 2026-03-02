@@ -1,7 +1,7 @@
 class AssetAssignment < ApplicationRecord
   belongs_to :asset
 
-STATUSES = ["pending", "assigned", "closed", "rejected"]
+STATUSES = [ "pending", "assigned", "closed", "rejected" ]
 
   validates :assigned_to, presence: true
   validates :assigned_from_date, presence: true

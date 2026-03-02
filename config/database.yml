@@ -1,0 +1,24 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: rails
+  password: <%= ENV["DB_PASSWORD"] %>
+  host: localhost
+
+development:
+  <<: *default
+  database: it_asset_backend_development
+
+test:
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: it_asset_backend_production
+    username: it_asset_backend
+    password: <%= ENV["IT_ASSET_BACKEND_DATABASE_PASSWORD"] %>
